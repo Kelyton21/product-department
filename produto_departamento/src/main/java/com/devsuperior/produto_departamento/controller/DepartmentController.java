@@ -25,6 +25,7 @@ public class DepartmentController {
         return departmentService.createDepartment(departmentDTO);
     }
     
+    
     @GetMapping
     public List<DepartmentDTO> findAll(){
         return departmentService.findAll();
