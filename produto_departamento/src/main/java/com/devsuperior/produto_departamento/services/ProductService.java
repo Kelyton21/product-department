@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devsuperior.produto_departamento.entities.Department;
 import com.devsuperior.produto_departamento.entities.Product;
 import com.devsuperior.produto_departamento.dto.ProductDTO;
+import com.devsuperior.produto_departamento.dto.ProductUpdateDTO;
 import com.devsuperior.produto_departamento.repositories.DepartmentRepository;
 import com.devsuperior.produto_departamento.repositories.ProductRepository;
 
@@ -35,6 +36,27 @@ public class ProductService {
         var entity = new Product(null,product.getName(),product.getPrice(),departmentR);
         var productSave = productRepository.save(entity);
         return productSave;
+    }
+
+    public void uptadeProduct(Long id, ProductUpdateDTO product){
+        var productFind = productRepository.findById(id);
+        if (productFind.isPresent()) {
+            Product productEntity = productFind.get();
+            if(product.getName() != null){
+                productEntity.setName(product.getName());
+            }
+            if (product.getPrice() != null) {
+                productEntity.setPrice(product.getPrice());
+            }
+            if (product.getDepartment() != null) {
+                Department departmentR = departmentRepository.findByName(product.getDepartment().getName())
+                    .orElseThrow(() -> new ResourceNotFoundException("Department not found: " + product.getDepartment()));
+                productEntity.setDepartment(departmentR);
+            }
+            productRepository.save(productEntity);
+        } else {
+            throw new ResourceNotFoundException("Product not found with id: " + id);
+        }  
     }
 
     public void deleteProduct(Long id){
