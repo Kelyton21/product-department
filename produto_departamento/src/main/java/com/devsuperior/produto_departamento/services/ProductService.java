@@ -36,4 +36,12 @@ public class ProductService {
         var productSave = productRepository.save(entity);
         return productSave;
     }
+
+    public void deleteProduct(Long id){
+        var productFind = productRepository.existsById(id);
+        if (!productFind) {
+            throw new ResourceNotFoundException("Product not found with id: " + id);
+        }
+        productRepository.deleteById(id);
+    }
 }
