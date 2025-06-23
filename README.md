@@ -45,8 +45,49 @@ API para criação de Product e Department, permitindo criar, atualizar, listar 
   "name": "string",
   "price": 0,
   "department": {
-    "id": 0,
     "name": "string"
   }
 }
+```
+## Exemplo de Objeto Json (Department)
+
+```json
+{
+    "name": "string"
+}
+```
+
+### Passos para Execução
+
+1. **Clone o repositório:**
+   ```bash
+   git clone link
+   cd pasta
+   ```
+
+2. **Configure o perfil do banco de dados:**
+   
+   Edite o arquivo `application.properties` e escolha o perfil:
+   - `test` - Usa H2 Database (em memória)
+   - `dev` - Usa PostgreSQL local
+
+3. **Execute o projeto:**
+   ```bash
+   mvn spring-boot:run
+   ```
+
+4. **Acesse a documentação Swagger:**
+   
+   Abra seu navegador em: http://localhost:8080/swagger-ui.html
+
+##  Estrutura do Projeto
+
+```
+com.projeto.todolist/
+├── controllers/          # Controladores REST
+├── dto/                 # Data Transfer Objects
+├── entities/            # Entidades JPA
+├── repositories/        # Repositórios de dados
+├── services/           # Lógica de negócio
+└── TodoListApplication.java  # Classe principal
 ```
