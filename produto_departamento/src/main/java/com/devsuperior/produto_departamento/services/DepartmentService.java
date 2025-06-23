@@ -22,6 +22,25 @@ public class DepartmentService {
         return departmentSave.getId();
     }
 
+    public DepartmentDTO update(Long id, DepartmentDTO departmentDTO) {
+        
+        var department = departmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Department not found with id: " + id));
+        
+        
+        department.setName(departmentDTO.getName());
+      
+        var updatedDepartment = departmentRepository.save(department);
+        
+        return new DepartmentDTO(updatedDepartment.getName());
+    }
+
+    public void delete(Long id) {
+        var department = departmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Department not found with id: " + id));
+        departmentRepository.delete(department);
+    }
+
     public List<DepartmentDTO> findAll() {
         List<Department> departments = departmentRepository.findAll();
         List<DepartmentDTO> departmentDTOs = departments.stream()
