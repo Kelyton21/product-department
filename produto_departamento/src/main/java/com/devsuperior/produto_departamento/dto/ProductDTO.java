@@ -5,7 +5,7 @@ public class ProductDTO {
     private Long id;
     private String name;
     private double price;
-    private String department;
+    private DepartmentDTO department;
 
     public ProductDTO() {
     }
@@ -14,7 +14,7 @@ public class ProductDTO {
         this.id = entity.getId();
         this.name = entity.getName();
         this.price = entity.getPrice();
-        this.department = entity.getDepartment().getName();
+        this.department = new DepartmentDTO(entity.getDepartment());
     }
 
     public Long getId() {
@@ -35,10 +35,7 @@ public class ProductDTO {
     public void setPrice(double price) {
         this.price = price;
     }
-    public String getDepartment() {
+    public DepartmentDTO getDepartment() {
         return department;
-    }
-    public void setDepartment(String department) {
-        this.department = department;
     }
 }

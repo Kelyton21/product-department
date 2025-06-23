@@ -6,14 +6,14 @@ public class ProductUpdateDTO {
     
     private String name;
     private Double price;
-    private Department department;
+    private DepartmentDTO department;
 
     public ProductUpdateDTO() {
     }
     public ProductUpdateDTO(String name, Double price, Department department) {
         this.name = name;
         this.price = price;
-        this.department = department;
+        this.department = new DepartmentDTO(department);
     }
     public String getName() {
         return name;
@@ -27,10 +27,10 @@ public class ProductUpdateDTO {
     public void setPrice(Double price) {
         this.price = price;
     }
-    public Department getDepartment() {
+    public DepartmentDTO getDepartment() {
         return department;
     }
     public void setDepartment(Department department) {
-        this.department = department;
+        this.department = new DepartmentDTO(department);
     }
 }

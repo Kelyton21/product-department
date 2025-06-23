@@ -29,19 +29,18 @@ public class ProductService {
         return productDTOs;
     }
 
-    public Product createProduct(ProductDTO product){
-        var productExist = productRepository.findByName(product.getName());
-        if(productExist.isPresent()){
-            Department departmentR = departmentRepository.findByName(product.getDepartment())
-            .orElseThrow(() -> new ResourceNotFoundException("Department not found: " + product.getDepartment()));
-           
-            var entity = new Product(null,product.getName(),product.getPrice(),departmentR);
-            var productSave = productRepository.save(entity);
-            return productSave;
-        }
-        else {
-            throw new ResourceNotFoundException("Product already exists with name: " + product.getName());
-        }
+    public Product createProduct(ProductDTO productDto) {
+    var productExist = productRepository.findByName(productDto.getName());
+
+    if (!productExist.isPresent()) {
+        Department department = departmentRepository.findByName(productDto.getDepartment().getName())
+            .orElseThrow(() -> new ResourceNotFoundException("Department not found: " + productDto.getDepartment().getName()));
+
+        Product entity = new Product(null, productDto.getName(), productDto.getPrice(), department);
+        return productRepository.save(entity);
+    } else {
+        throw new ResourceNotFoundException("Product already exists with name: " + productDto.getName());
+    }
     }
 
     public void uptadeProduct(Long id, ProductUpdateDTO product){
