@@ -89,5 +89,5 @@ com.projeto.todolist/
 ├── entities/            # Entidades JPA
 ├── repositories/        # Repositórios de dados
 ├── services/           # Lógica de negócio
-└── TodoListApplication.java  # Classe principal
+└── ProdutoDepartamentoApplication.java  # Classe principal
 ```
