@@ -83,7 +83,7 @@ API para criação de Product e Department, permitindo criar, atualizar, listar 
 ##  Estrutura do Projeto
 
 ```
-com.projeto.todolist/
+com.projeto.produto_departamento/
 ├── controllers/          # Controladores REST
 ├── dto/                 # Data Transfer Objects
 ├── entities/            # Entidades JPA
