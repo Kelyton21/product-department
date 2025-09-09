@@ -28,7 +28,7 @@ public class ProductService {
         List<ProductDTO> productDTOs = products.stream().map(ProductDTO::new).toList();
         return productDTOs;
     }
-
+    @Transactional
     public Product createProduct(ProductDTO productDto) {
     var productExist = productRepository.findByName(productDto.getName());
 
@@ -42,7 +42,7 @@ public class ProductService {
         throw new ResourceNotFoundException("Product already exists with name: " + productDto.getName());
     }
     }
-
+    @Transactional
     public void uptadeProduct(Long id, ProductUpdateDTO product){
         var productFind = productRepository.findById(id);
         if (productFind.isPresent()) {
@@ -63,7 +63,7 @@ public class ProductService {
             throw new ResourceNotFoundException("Product not found with id: " + id);
         }  
     }
-
+    @Transactional
     public void deleteProduct(Long id){
         var productFind = productRepository.existsById(id);
         if (!productFind) {

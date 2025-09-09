@@ -1,10 +1,12 @@
 package com.devsuperior.produto_departamento.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 
 import com.devsuperior.produto_departamento.dto.DepartmentDTO;
@@ -25,24 +27,34 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @PostMapping
-    public Long createDepartment(@RequestBody DepartmentDTO departmentDTO) {
-        return departmentService.createDepartment(departmentDTO);
+    public ResponseEntity<Void> createDepartment(@RequestBody DepartmentDTO departmentDTO) {
+        
+        Long newDepartmentId = departmentService.createDepartment(departmentDTO);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest() // pego a URL da minha api
+                .path("/{id}") // adiciono o /{id} no final da URL
+                .buildAndExpand(newDepartmentId) // substituo o {id} pelo id do novo departamento
+                .toUri(); // converto para URI
+
+        return ResponseEntity.created(location).build(); // retorno um 201 
     }
     
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
         departmentService.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build(); // retorno um 204
     }
 
     @PutMapping(value = "/{id}")
-    public DepartmentDTO updateDepartment(@PathVariable Long id, @RequestBody DepartmentDTO departmentDTO) {
-        return departmentService.update(id, departmentDTO);
+    public ResponseEntity<DepartmentDTO> updateDepartment(@PathVariable Long id, @RequestBody DepartmentDTO departmentDTO) {
+        DepartmentDTO uDepartmentDTO = departmentService.update(id, departmentDTO);
+        return ResponseEntity.ok().body(uDepartmentDTO); // retorno um 200 com o corpo da resposta
     }
     
     @GetMapping
-    public List<DepartmentDTO> findAll(){
-        return departmentService.findAll();
+    public ResponseEntity<List<DepartmentDTO>> findAll(){
+        var departmentDTOs = departmentService.findAll();
+        return ResponseEntity.ok().body(departmentDTOs); // retorno um 200 com o corpo da resposta
     }
     
 }
