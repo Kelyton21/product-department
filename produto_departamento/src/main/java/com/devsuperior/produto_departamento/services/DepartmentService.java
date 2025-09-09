@@ -27,9 +27,12 @@ public class DepartmentService {
         var department = departmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Department not found with id: " + id));
         
-        
+        if (departmentDTO.getName() == null) {
+            throw new RuntimeException("Department name cannot be null");
+            
+        }
         department.setName(departmentDTO.getName());
-      
+        
         var updatedDepartment = departmentRepository.save(department);
         
         return new DepartmentDTO(updatedDepartment.getName());
