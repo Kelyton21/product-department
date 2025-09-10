@@ -13,6 +13,7 @@ import com.devsuperior.produto_departamento.repositories.ProductRepository;
 
 // Add this import if you have the exception in your project
 import com.devsuperior.produto_departamento.exceptions.ResourceNotFoundException;
+import java.util.Optional;
 
 
 @Service
@@ -29,7 +30,7 @@ public class ProductService {
         return productDTOs;
     }
     @Transactional
-    public Product createProduct(ProductDTO productDto) {
+    public Long createProduct(ProductDTO productDto) {
     var productExist = productRepository.findByName(productDto.getName());
 
     if (!productExist.isPresent()) {
@@ -37,7 +38,8 @@ public class ProductService {
             .orElseThrow(() -> new ResourceNotFoundException("Department not found: " + productDto.getDepartment().getName()));
 
         Product entity = new Product(null, productDto.getName(), productDto.getPrice(), department);
-        return productRepository.save(entity);
+        var productSave = productRepository.save(entity);
+        return productSave.getId();
     } else {
         throw new ResourceNotFoundException("Product already exists with name: " + productDto.getName());
     }
@@ -70,5 +72,10 @@ public class ProductService {
             throw new ResourceNotFoundException("Product not found with id: " + id);
         }
         productRepository.deleteById(id);
+    }
+
+    public Optional<ProductDTO> findById(Long id){
+        var product = productRepository.findById(id);
+        return product.map(ProductDTO::new);
     }
 }
