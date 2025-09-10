@@ -9,12 +9,15 @@ import com.devsuperior.produto_departamento.dto.DepartmentDTO;
 import com.devsuperior.produto_departamento.entities.Department;
 import com.devsuperior.produto_departamento.repositories.DepartmentRepository;
 
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 public class DepartmentService {
 
     @Autowired
     private DepartmentRepository departmentRepository;
-    
+
+    @Transactional
     public Long createDepartment(DepartmentDTO departmentDTO) {
         // DTO -> Entity
         var entity = new Department(null, departmentDTO.getName());
@@ -22,6 +25,7 @@ public class DepartmentService {
         return departmentSave.getId();
     }
 
+    @Transactional
     public DepartmentDTO update(Long id, DepartmentDTO departmentDTO) {
         
         var department = departmentRepository.findById(id)
@@ -38,12 +42,14 @@ public class DepartmentService {
         return new DepartmentDTO(updatedDepartment.getName());
     }
 
+    @Transactional
     public void delete(Long id) {
         var department = departmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Department not found with id: " + id));
         departmentRepository.delete(department);
     }
-
+    
+    @Transactional(readOnly = true)
     public List<DepartmentDTO> findAll() {
         List<Department> departments = departmentRepository.findAll();
         List<DepartmentDTO> departmentDTOs = departments.stream()
