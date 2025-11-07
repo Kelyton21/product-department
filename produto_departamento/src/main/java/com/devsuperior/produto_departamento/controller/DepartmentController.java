@@ -3,6 +3,7 @@ package com.devsuperior.produto_departamento.controller;
 import java.net.URI;
 import java.util.List;
 
+import com.devsuperior.produto_departamento.dto.DepartmentGetDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,7 +53,7 @@ public class DepartmentController {
     }
     
     @GetMapping
-    public ResponseEntity<List<DepartmentDTO>> findAll(){
+    public ResponseEntity<List<DepartmentGetDTO>> findAll(){
         var departmentDTOs = departmentService.findAll();
         return ResponseEntity.ok().body(departmentDTOs); // retorno um 200 com o corpo da resposta
     }

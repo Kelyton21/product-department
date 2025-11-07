@@ -1,5 +1,7 @@
 package com.devsuperior.produto_departamento.services;
 import java.util.List;
+
+import com.devsuperior.produto_departamento.dto.ProductCreateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,12 +32,11 @@ public class ProductService {
         return productDTOs;
     }
     @Transactional
-    public Long createProduct(ProductDTO productDto) {
+    public Long createProduct(ProductCreateDTO productDto) {
     var productExist = productRepository.findByName(productDto.getName());
 
-    if (!productExist.isPresent()) {
-        Department department = departmentRepository.findByName(productDto.getDepartment().getName())
-            .orElseThrow(() -> new ResourceNotFoundException("Department not found: " + productDto.getDepartment().getName()));
+    if (productExist.isEmpty()) {
+        Department department = departmentRepository.findById(productDto.getIdDepartment()).orElse(null);
 
         Product entity = new Product(null, productDto.getName(), productDto.getPrice(), department);
         var productSave = productRepository.save(entity);
@@ -77,5 +78,10 @@ public class ProductService {
     public Optional<ProductDTO> findById(Long id){
         var product = productRepository.findById(id);
         return product.map(ProductDTO::new);
+    }
+
+    public List<ProductDTO> findProductsByName(String titulo) {
+        List<Product> products = productRepository.findByName(titulo);
+        return products.stream().map(ProductDTO::new).toList();
     }
 }

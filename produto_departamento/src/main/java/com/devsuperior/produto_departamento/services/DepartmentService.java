@@ -2,6 +2,7 @@ package com.devsuperior.produto_departamento.services;
 
 import java.util.List;
 
+import com.devsuperior.produto_departamento.dto.DepartmentGetDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,10 +51,10 @@ public class DepartmentService {
     }
     
     @Transactional(readOnly = true)
-    public List<DepartmentDTO> findAll() {
+    public List<DepartmentGetDTO> findAll() {
         List<Department> departments = departmentRepository.findAll();
-        List<DepartmentDTO> departmentDTOs = departments.stream()
-                .map(department -> new DepartmentDTO(department.getName()))
+        List<DepartmentGetDTO> departmentDTOs = departments.stream()
+                .map(department -> new DepartmentGetDTO(department.getId(),department.getName()))
                 .toList();
         return departmentDTOs;
     }
